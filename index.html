@@ -88,8 +88,6 @@
 <body>
     <h1>Exercices de Conversion - 1ère Scientifique</h1>
     
-   
-
     <h2>Rappels de cours</h2>
     
     <h3>Préfixes multiplicatifs</h3>
@@ -129,7 +127,7 @@
         <tr>
             <td>Volume</td>
             <td>m³, L, mL, cm³, mm³</td>
-            <td>1 m³ = 10^3 L, 1 L = 10^3 mL = 10^3 cm³, 1 cm³ = 10^3 mm³</td>
+            <td>1 m�� = 10^3 L, 1 L = 10^3 mL = 10^3 cm³, 1 cm³ = 10^3 mm³</td>
         </tr>
         <tr>
             <td>Vitesse</td>
@@ -148,9 +146,7 @@
         </tr>
     </table>
 
-    <h2>Exercices de conversion</h2>
-    <div id="exercises"></div>
- <h2>Consignes</h2>
+    <h2>Consignes</h2>
     <div class="important">
         <p>- Utilisez la virgule (,) comme séparateur décimal.</p>
         <p>- Utilisez "x" pour la multiplication dans la notation scientifique.</p>
@@ -158,6 +154,10 @@
         <p>- N'incluez pas l'unité finale dans votre réponse.</p>
         <p>Exemple de réponse correcte : 1,5x10^5</p>
     </div>
+
+    <h2>Exercices de conversion</h2>
+    <div id="exercises"></div>
+
     <script>
         const exercises = [
             {initial: "1500", unitInitial: "km", final: "1,5x10^8", unitFinal: "cm", difficulty: 1},
@@ -171,117 +171,99 @@
             {initial: "750", unitInitial: "mL", final: "7,5x10^-4", unitFinal: "m³", difficulty: 3},
             {initial: "9", unitInitial: "km/h", final: "2,5", unitFinal: "m/s", difficulty: 4},
             {initial: "0,075", unitInitial: "km", final: "7,5x10^4", unitFinal: "mm", difficulty: 2},
-{initial: "1,8", unitInitial: "Mg", final: "1,8x10^6", unitFinal: "g", difficulty: 2},
-{initial: "320", unitInitial: "cm³", final: "3,2x10^-4", unitFinal: "m³", difficulty: 2},
-{initial: "4,5", unitInitial: "m/s", final: "1,62x10^1", unitFinal: "km/h", difficulty: 3},
-{initial: "0,0025", unitInitial: "km²", final: "2,5x10^3", unitFinal: "m²", difficulty: 3},
-{initial: "1,2", unitInitial: "kPa", final: "1,2x10^3", unitFinal: "Pa", difficulty: 2},
-{initial: "0,5", unitInitial: "ton/m³", final: "5,0x10^2", unitFinal: "kg/m³", difficulty: 3},
-{initial: "2,8", unitInitial: "kW", final: "2,8x10^3", unitFinal: "W", difficulty: 2},
-{initial: "150", unitInitial: "km/h", final: "4,17x10^1", unitFinal: "m/s", difficulty: 3},
-{initial: "0,03", unitInitial: "bar", final: "3,0x10^3", unitFinal: "Pa", difficulty: 3},
-{initial: "1,8", unitInitial: "g/cm³", final: "1,8x10^3", unitFinal: "kg/m³", difficulty: 3},
-{initial: "5000", unitInitial: "mm", final: "5,0", unitFinal: "m", difficulty: 1},
-{initial: "0,6", unitInitial: "m/s²", final: "2,16", unitFinal: "km/h²", difficulty: 4},
-{initial: "12", unitInitial: "h", final: "4,32x10^4", unitFinal: "s", difficulty: 2},
-{initial: "0,05", unitInitial: "km³", final: "5,0x10^7", unitFinal: "m³", difficulty: 4},
-{initial: "1800", unitInitial: "mg/L", final: "1,8", unitFinal: "g/L", difficulty: 2},
-{initial: "0,25", unitInitial: "kN", final: "2,5x10^2", unitFinal: "N", difficulty: 2},
-{initial: "750", unitInitial: "cm²", final: "7,5x10^-2", unitFinal: "m²", difficulty: 2},
-{initial: "0,18", unitInitial: "Mg", final: "1,8x10^2", unitFinal: "kg", difficulty: 2},
-{initial: "9000", unitInitial: "µm", final: "9,0x10^-3", unitFinal: "m", difficulty: 3},
-{initial: "0,8", unitInitial: "km/min", final: "1,33x10^1", unitFinal: "m/s", difficulty: 4},
-{initial: "2,2", unitInitial: "kg/L", final: "2,2x10^3", unitFinal: "g/L", difficulty: 2},
-{initial: "3500", unitInitial: "mm³", final: "3,5x10^-6", unitFinal: "m³", difficulty: 3},
-{initial: "0,18", unitInitial: "MW", final: "1,8x10^5", unitFinal: "W", difficulty: 3},
-{initial: "6", unitInitial: "km²", final: "6,0x10^6", unitFinal: "m²", difficulty: 2},
-{initial: "0,08", unitInitial: "m³/s", final: "8,0x10^1", unitFinal: "L/s", difficulty: 3},
-{initial: "2800", unitInitial: "mg", final: "2,8x10^-3", unitFinal: "kg", difficulty: 2},
-{initial: "1,2", unitInitial: "km/s", final: "4,32x10^3", unitFinal: "km/h", difficulty: 4},
-{initial: "1,8", unitInitial: "ton/m³", final: "1,8x10^-3", unitFinal: "kg/L", difficulty: 4},
-{initial: "4500", unitInitial: "cm", final: "4,5x10^-2", unitFinal: "km", difficulty: 2},
-{initial: "0,05", unitInitial: "kPa", final: "5,0x10^1", unitFinal: "Pa", difficulty: 2},
-{initial: "2400", unitInitial: "mm²", final: "2,4x10^-3", unitFinal: "m²", difficulty: 3},
-{initial: "0,9", unitInitial: "m/s³", final: "3,24x10^3", unitFinal: "km/h³", difficulty: 5},
-{initial: "3", unitInitial: "GHz", final: "3,0x10^9", unitFinal: "Hz", difficulty: 3},
-{initial: "0,015", unitInitial: "km³", final: "1,5x10^7", unitFinal: "m³", difficulty: 4},
-{initial: "2200", unitInitial: "mg/m³", final: "2,2x10^-3", unitFinal: "g/L", difficulty: 4},
-{initial: "0,6", unitInitial: "kN/m²", final: "6,0x10^-3", unitFinal: "bar", difficulty: 4},
-{initial: "1800", unitInitial: "µg", final: "1,8x10^-6", unitFinal: "kg", difficulty: 3},
-{initial: "0,06", unitInitial: "Mm", final: "6,0x10^4", unitFinal: "m", difficulty: 3},
-{initial: "12", unitInitial: "km/h²", final: "9,26x10^-4", unitFinal: "m/s²", difficulty: 4},
-{initial: "0,8", unitInitial: "kg/m²", final: "8,0x10^-4", unitFinal: "ton/m²", difficulty: 3},
-{initial: "9000", unitInitial: "mm/s", final: "3,24x10^1", unitFinal: "km/h", difficulty: 4},
-{initial: "0,25", unitInitial: "MW·h", final: "9,0x10^8", unitFinal: "J", difficulty: 4},
-{initial: "2500", unitInitial: "cm³/s", final: "2,5x10^-3", unitFinal: "m³/s", difficulty: 3},
-{initial: "0,4", unitInitial: "km/L", final: "4,0x10^-4", unitFinal: "m³/m", difficulty: 4},
-{initial: "2,5", unitInitial: "kg·m/s²", final: "2,5", unitFinal: "N", difficulty: 3},
-{initial: "3500", unitInitial: "mm Hg", final: "4,67x10^5", unitFinal: "Pa", difficulty: 4},
-{initial: "0,18", unitInitial: "km/s²", final: "6,48x10^5", unitFinal: "km/h²", difficulty: 5},
-{initial: "10", unitInitial: "m²/s", final: "3,6x10^4", unitFinal: "m²/h", difficulty: 3},
-{initial: "0,08", unitInitial: "mol/L", final: "8,0x10^-2", unitFinal: "mol/dm³", difficulty: 2},
-{initial: "4200", unitInitial: "cd", final: "4,2x10^3", unitFinal: "lm/sr", difficulty: 3},
-{initial: "1,2", unitInitial: "kg·m²", final: "1,2x10^5", unitFinal: "g·cm²", difficulty: 4},
-{initial: "3,6", unitInitial: "J/kg·K", final: "3,6x10^-3", unitFinal: "kJ/kg·K", difficulty: 3},
-{initial: "8000", unitInitial: "lx", final: "8,0x10^3", unitFinal: "lm/m²", difficulty: 3},
-{initial: "0,05", unitInitial: "T", final: "5,0x10^-2", unitFinal: "Wb/m²", difficulty: 4},
-{initial: "2400", unitInitial: "rad/s", final: "3,82x10^2", unitFinal: "Hz", difficulty: 4},
-{initial: "0,9", unitInitial: "C/m³", final: "9,0x10^5", unitFinal: "µC/L", difficulty: 4},
-{initial: "8", unitInitial: "Gy", final: "8,0", unitFinal: "J/kg", difficulty: 3},
-{initial: "0,03", unitInitial: "H", final: "3,0x10^-2", unitFinal: "Wb/A", difficulty: 4}
-// Ajoutez ici les 50-70 exercices supplémentaires en suivant le même modèle
+            {initial: "1,8", unitInitial: "Mg", final: "1,8x10^6", unitFinal: "g", difficulty: 2},
+            {initial: "320", unitInitial: "cm³", final: "3,2x10^-4", unitFinal: "m³", difficulty: 2},
+            {initial: "4,5", unitInitial: "m/s", final: "1,62x10^1", unitFinal: "km/h", difficulty: 3},
+            {initial: "0,0025", unitInitial: "km²", final: "2,5x10^3", unitFinal: "m²", difficulty: 3},
+            {initial: "1,2", unitInitial: "kPa", final: "1,2x10^3", unitFinal: "Pa", difficulty: 2},
+            {initial: "0,5", unitInitial: "ton/m³", final: "5,0x10^2", unitFinal: "kg/m³", difficulty: 3},
+            {initial: "2,8", unitInitial: "kW", final: "2,8x10^3", unitFinal: "W", difficulty: 2},
+            {initial: "150", unitInitial: "km/h", final: "4,17x10^1", unitFinal: "m/s", difficulty: 3},
+            {initial: "0,03", unitInitial: "bar", final: "3,0x10^3", unitFinal: "Pa", difficulty: 3},
+            {initial: "1,8", unitInitial: "g/cm³", final: "1,8x10^3", unitFinal: "kg/m³", difficulty: 3},
+            {initial: "5000", unitInitial: "mm", final: "5,0", unitFinal: "m", difficulty: 1},
+            {initial: "0,6", unitInitial: "m/s²", final: "2,16", unitFinal: "km/h²", difficulty: 4},
+            {initial: "12", unitInitial: "h", final: "4,32x10^4", unitFinal: "s", difficulty: 2},
+            {initial: "0,05", unitInitial: "km³", final: "5,0x10^7", unitFinal: "m³", difficulty: 4},
+            {initial: "1800", unitInitial: "mg/L", final: "1,8", unitFinal: "g/L", difficulty: 2},
+            {initial: "0,25", unitInitial: "kN", final: "2,5x10^2", unitFinal: "N", difficulty: 2},
+            {initial: "750", unitInitial: "cm²", final: "7,5x10^-2", unitFinal: "m²", difficulty: 2},
+            {initial: "0,18", unitInitial: "Mg", final: "1,8x10^2", unitFinal: "kg", difficulty: 2},
+            {initial: "9000", unitInitial: "µm", final: "9,0x10^-3", unitFinal: "m", difficulty: 3},
+            {initial: "0,8", unitInitial: "km/min", final: "1,33x10^1", unitFinal: "m/s", difficulty: 4},
+            {initial: "2,2", unitInitial: "kg/L", final: "2,2x10^3", unitFinal: "g/L", difficulty: 2},
+            {initial: "3500", unitInitial: "mm³", final: "3,5x10^-6", unitFinal: "m³", difficulty: 3},
+            {initial: "0,18", unitInitial: "MW", final: "1,8x10^5", unitFinal: "W", difficulty: 3},
+            {initial: "6", unitInitial: "km²", final: "6,0x10^6", unitFinal: "m²", difficulty: 2},
+            {initial: "0,08", unitInitial: "m³/s", final: "8,0x10^1", unitFinal: "L/s", difficulty: 3},
+            {initial: "2800", unitInitial: "mg", final: "2,8x10^-3", unitFinal: "kg", difficulty: 2},
+            {initial: "1,2", unitInitial: "km/s", final: "4,32x10^3", unitFinal: "km/h", difficulty: 4},
+            {initial: "1,8", unitInitial: "ton/m³", final: "1,8x10^-3", unitFinal: "kg/L", difficulty: 4},
+            {initial: "4500", unitInitial: "cm", final: "4,5x10^-2", unitFinal: "km", difficulty: 2},
+            {initial: "0,05", unitInitial: "kPa", final: "5,0x10^1", unitFinal: "Pa", difficulty: 2},
+            {initial: "2400", unitInitial: "mm²", final: "2,4x10^-3", unitFinal: "m²", difficulty: 3},
+            {initial: "0,9", unitInitial: "m/s³", final: "3,24x10^3", unitFinal: "km/h³", difficulty: 5},
+            {initial: "3", unitInitial: "GHz", final: "3,0x10^9", unitFinal: "Hz", difficulty: 3},
+            {initial: "0,015", unitInitial: "km³", final: "1,5x10^7", unitFinal: "m³", difficulty: 4},
+            {initial: "2200", unitInitial: "mg/m³", final: "2,2x10^-3", unitFinal: "g/L", difficulty: 4},
+            {initial: "0,6", unitInitial: "kN/m²", final: "6,0x10^-3", unitFinal: "bar", difficulty: 4},
+            {initial: "1800", unitInitial: "µg", final: "1,8x10^-6", unitFinal: "kg", difficulty: 3},
+            {initial: "0,06", unitInitial: "Mm", final: "6,0x10^4", unitFinal: "m", difficulty: 3},
+            {initial: "12", unitInitial: "km/h²", final: "9,26x10^-4", unitFinal: "m/s²", difficulty: 4},
+            {initial: "0,8", unitInitial: "kg/m²", final: "8,0x10^-4", unitFinal: "ton/m²", difficulty: 3},
+            {initial: "9000", unitInitial: "mm/s", final: "3,24x10^1", unitFinal: "km/h", difficulty: 4},
+            {initial: "0,25", unitInitial: "MW·h", final: "9,0x10^8", unitFinal: "J", difficulty: 4},
+            {initial: "2500", unitInitial: "cm³/s", final: "2,5x10^-3", unitFinal: "m³/s", difficulty: 3},
+            {initial: "0,4", unitInitial: "km/L", final: "4,0x10^-4", unitFinal: "m³/m", difficulty: 4},
+            {initial: "2,5", unitInitial: "kg·m/s²", final: "2,5", unitFinal: "N", difficulty: 3},
+            {initial: "3500", unitInitial: "mm Hg", final: "4,67x10^5", unitFinal: "Pa", difficulty: 4},
+            {initial: "0,18", unitInitial: "km/s²", final: "6,48x10^5", unitFinal: "km/h²", difficulty: 5},
+            {initial: "10", unitInitial: "m²/s", final: "3,6x10^4", unitFinal: "m²/h", difficulty: 3},
+            {initial: "0,08", unitInitial: "mol/L", final: "8,0x10^-2", unitFinal: "mol/dm³", difficulty: 2},
+            {initial: "4200", unitInitial: "cd", final: "4,2x10^3", unitFinal: "lm/sr", difficulty: 3},
+            {initial: "1,2", unitInitial: "kg·m²", final: "1,2x10^5", unitFinal: "g·cm²", difficulty: 4},
+            {initial: "3,6", unitInitial: "J/kg·K", final: "3,6x10^-3", unitFinal: "kJ/kg·K", difficulty: 3},
+            {initial: "8000", unitInitial: "lx", final: "8,0x10^3", unitFinal: "lm/m²", difficulty: 3},
+            {initial: "0,05", unitInitial: "T", final: "5,0x10^-2", unitFinal: "Wb/m²", difficulty: 4},
+            {initial: "2400", unitInitial: "rad/s", final: "3,82x10^2", unitFinal: "Hz", difficulty: 4},
+            {initial: "0,9", unitInitial: "C/m³", final: "9,0x10^5", unitFinal: "µC/L", difficulty: 4},
+            {initial: "8", unitInitial: "Gy", final: "8,0", unitFinal: "J/kg", difficulty: 3},
+            {initial: "0,03", unitInitial: "H", final: "3,0x10^-2", unitFinal: "Wb/A", difficulty: 4}
         ];
 
         exercises.sort((a, b) => a.difficulty - b.difficulty);
 
         function createExercises() {
-    const container = document.getElementById('exercises');
-    exercises.forEach((ex, index) => {
-        const div = document.createElement('div');
-        div.className = 'exercise';
-        div.innerHTML = `
-            <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
-            <input type="text" id="answer${index}" placeholder="Votre réponse">
-            <button onclick="checkAnswer(${index})">Vérifier</button>
-            <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
-            <div id="feedback${index}" class="feedback"></div>
-            <div id="hint${index}" class="hint"></div>
-            <div id="explanation${index}" class="explanation"></div>
-        `;
-        container.appendChild(div);
-    });
-}
-
+            const container = document.getElementById('exercises');
+            exercises.forEach((ex, index) => {
+                const div = document.createElement('div');
+                div.className = 'exercise';
+                div.innerHTML = `
+                    <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
+                    <input type="text" id="answer${index}" placeholder="Votre réponse">
+                    <button onclick="checkAnswer(${index})">Vérifier</button>
+                    <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
+                    <div id="feedback${index}" class="feedback"></div>
+                    <div id="hint${index}" class="hint"></div>
+                    <div id="explanation${index}" class="explanation"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
 
         function checkAnswer(index) {
-    const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
-    const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
-    const feedbackElement = document.getElementById(`feedback${index}`);
-    const hintButton = document.getElementById(`hintBtn${index}`);
-    
-    if (userAnswer === correctAnswer) {
-        feedbackElement.textContent = "Correct ! Bien joué !";
-        feedbackElement.className = "feedback correct";
-        hintButton.style.display = 'none';
-        showExplanation(index);
-    } else {
-        feedbackElement.textContent = "Incorrect. Essayez encore !";
-        feedbackElement.className = "feedback incorrect";
-        hintButton.style.display = 'inline-block';
-    }
-}
-
-            
-            let attempts = parseInt(attemptsElement.textContent) + 1;
-            attemptsElement.textContent = attempts;
+            const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
+            const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
+            const feedbackElement = document.getElementById(`feedback${index}`);
+            const hintButton = document.getElementById(`hintBtn${index}`);
             
             if (userAnswer === correctAnswer) {
-                feedbackElement.textContent = `Correct ! Bien joué ! (${attempts} tentative${attempts > 1 ? 's' : ''})`;
+                feedbackElement.textContent = "Correct ! Bien joué !";
                 feedbackElement.className = "feedback correct";
                 hintButton.style.display = 'none';
                 showExplanation(index);
             } else {
-                feedbackElement.textContent = `Incorrect. Essayez encore ! (${attempts} tentative${attempts > 1 ? 's' : ''})`;
+                feedbackElement.textContent = "Incorrect. Essayez encore !";
                 feedbackElement.className = "feedback incorrect";
                 hintButton.style.display = 'inline-block';
             }
@@ -294,59 +276,48 @@
         }
 
         function showExplanation(index) {
-    const explanationElement = document.getElementById(`explanation${index}`);
-    explanationElement.style.display = 'block';
-    const ex = exercises[index];
-    
-    let explanation = '<h4>Explication détaillée :</h4>';
-    const initialValue = parseFloat(ex.initial.replace(',', '.'));
-    const finalValue = parseFloat(ex.final.replace(',', '.'));
+            const explanationElement = document.getElementById(`explanation${index}`);
+            explanationElement.style.display = 'block';
+            const ex = exercises[index];
+            
+            let explanation = '<h4>Explication détaillée :</h4>';
+            const initialValue = parseFloat(ex.initial.replace(',', '.'));
+            const finalValue = parseFloat(ex.final.replace(',', '.'));
 
-    // Fonction pour obtenir l'exposant de 10
-    function getExponent(from, to) {
-        return Math.log10(to / from);
-    }
+            function getExponent(from, to) {
+                return Math.log10(to / from);
+            }
 
-    // Cas spéciaux
-    if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
-        const factor = (finalValue / initialValue).toFixed(4);
-        explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
-        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
-    } 
-    // Conversions de longueur
-    else if (['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitInitial) && ['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitFinal)) {
-        const units = ['km', 'm', 'cm', 'mm', 'µm'];
-        const startIndex = units.indexOf(ex.unitInitial);
-        const endIndex = units.indexOf(ex.unitFinal);
-        const exponent = (endIndex - startIndex) * 3;
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
-    }
-    // Conversions de masse
-    else if (['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitInitial) && ['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitFinal)) {
-        const units = ['ton', 'kg', 'g', 'mg', 'µg'];
-        const startIndex = units.indexOf(ex.unitInitial);
-        const endIndex = units.indexOf(ex.unitFinal);
-        const exponent = (endIndex - startIndex) * 3;
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
-    }
-    // Conversions de volume
-    else if (['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitInitial) && ['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitFinal)) {
-        const exponent = getExponent(initialValue, finalValue);
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
-    }
-    // Autres conversions
-    else {
-        const exponent = getExponent(initialValue, finalValue);
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
-    }
+            if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
+                const factor = (finalValue / initialValue).toFixed(4);
+                explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+                explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+            } else if (['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitInitial) && ['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitFinal)) {
+                const units = ['km', 'm', 'cm', 'mm', 'µm'];
+                const startIndex = units.indexOf(ex.unitInitial);
+                const endIndex = units.indexOf(ex.unitFinal);
+                const exponent = (endIndex - startIndex) * 3;
+                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+            } else if (['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitInitial) && ['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitFinal)) {
+                const units = ['ton', 'kg', 'g', 'mg', 'µg'];
+                const startIndex = units.indexOf(ex.unitInitial);
+                const endIndex = units.indexOf(ex.unitFinal);
+                const exponent = (endIndex - startIndex) * 3;
+                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+            } else if (['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitInitial) && ['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitFinal)) {
+                const exponent = getExponent(initialValue, finalValue);
+                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+            } else {
+                const exponent = getExponent(initialValue, finalValue);
+                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+            }
 
-    explanationElement.innerHTML = explanation;
-}
-
+            explanationElement.innerHTML = explanation;
+        }
 
         createExercises();
     </script>
