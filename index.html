@@ -184,8 +184,13 @@
         };
 
         function getExponent(category, from, to) {
-            return unitInfo[category].conversions[to] - unitInfo[category].conversions[from];
-        }
+    if (!unitInfo[category] || !unitInfo[category].conversions[from] || !unitInfo[category].conversions[to]) {
+        console.error(`Unités non trouvées dans la catégorie ${category}: ${from} ou ${to}`);
+        return 0;
+    }
+    return unitInfo[category].conversions[to] - unitInfo[category].conversions[from];
+}
+
 
         function toScientificNotation(number) {
             const exponent = Math.floor(Math.log10(Math.abs(number)));
