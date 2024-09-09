@@ -235,35 +235,42 @@
         exercises.sort((a, b) => a.difficulty - b.difficulty);
 
         function createExercises() {
-            const container = document.getElementById('exercises');
-            exercises.forEach((ex, index) => {
-                const div = document.createElement('div');
-                div.className = 'exercise';
-                div.innerHTML = `
-                    <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
-                    <input type="text" id="answer${index}" placeholder="Votre réponse">
-                    <button onclick="checkAnswer(${index})">Vérifier</button>
-                    <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
-                    <div id="feedback${index}" class="feedback"></div>
-                    <div id="hint${index}" class="hint"></div>
-                    <div id="explanation${index}" class="explanation"></div>
-                `;
-                container.appendChild(div);
-            });
-        }
+    const container = document.getElementById('exercises');
+    exercises.forEach((ex, index) => {
+        const div = document.createElement('div');
+        div.className = 'exercise';
+        div.innerHTML = `
+            <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
+            <input type="text" id="answer${index}" placeholder="Votre réponse">
+            <button onclick="checkAnswer(${index})">Vérifier</button>
+            <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
+            <div id="feedback${index}" class="feedback"></div>
+            <div id="hint${index}" class="hint"></div>
+            <div id="explanation${index}" class="explanation"></div>
+        `;
+        container.appendChild(div);
+    });
+}
+
 
         function checkAnswer(index) {
-            const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
-            const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
-            const feedbackElement = document.getElementById(`feedback${index}`);
-            const hintButton = document.getElementById(`hintBtn${index}`);
-            const attemptsElement = document.getElementById(`attempts${index}`) || document.createElement('span');
-            attemptsElement.id = `attempts${index}`;
-            
-            if (!attemptsElement.textContent) {
-                attemptsElement.textContent = '0';
-                feedbackElement.parentNode.insertBefore(attemptsElement, feedbackElement);
-            }
+    const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
+    const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
+    const feedbackElement = document.getElementById(`feedback${index}`);
+    const hintButton = document.getElementById(`hintBtn${index}`);
+    
+    if (userAnswer === correctAnswer) {
+        feedbackElement.textContent = "Correct ! Bien joué !";
+        feedbackElement.className = "feedback correct";
+        hintButton.style.display = 'none';
+        showExplanation(index);
+    } else {
+        feedbackElement.textContent = "Incorrect. Essayez encore !";
+        feedbackElement.className = "feedback incorrect";
+        hintButton.style.display = 'inline-block';
+    }
+}
+
             
             let attempts = parseInt(attemptsElement.textContent) + 1;
             attemptsElement.textContent = attempts;
@@ -287,16 +294,59 @@
         }
 
         function showExplanation(index) {
-            const explanationElement = document.getElementById(`explanation${index}`);
-            explanationElement.style.display = 'block';
-            const ex = exercises[index];
-            explanationElement.innerHTML = `
-                Explication :<br>
-                1 ${ex.unitInitial} = 10<sup>n</sup> ${ex.unitFinal} (trouvez n)<br>
-                Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} x 10<sup>n</sup> ${ex.unitFinal}<br>
-                = ${ex.final} ${ex.unitFinal}
-            `;
-        }
+    const explanationElement = document.getElementById(`explanation${index}`);
+    explanationElement.style.display = 'block';
+    const ex = exercises[index];
+    
+    let explanation = '<h4>Explication détaillée :</h4>';
+    const initialValue = parseFloat(ex.initial.replace(',', '.'));
+    const finalValue = parseFloat(ex.final.replace(',', '.'));
+
+    // Fonction pour obtenir l'exposant de 10
+    function getExponent(from, to) {
+        return Math.log10(to / from);
+    }
+
+    // Cas spéciaux
+    if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
+        const factor = (finalValue / initialValue).toFixed(4);
+        explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+    } 
+    // Conversions de longueur
+    else if (['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitInitial) && ['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitFinal)) {
+        const units = ['km', 'm', 'cm', 'mm', 'µm'];
+        const startIndex = units.indexOf(ex.unitInitial);
+        const endIndex = units.indexOf(ex.unitFinal);
+        const exponent = (endIndex - startIndex) * 3;
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+    }
+    // Conversions de masse
+    else if (['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitInitial) && ['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitFinal)) {
+        const units = ['ton', 'kg', 'g', 'mg', 'µg'];
+        const startIndex = units.indexOf(ex.unitInitial);
+        const endIndex = units.indexOf(ex.unitFinal);
+        const exponent = (endIndex - startIndex) * 3;
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+    }
+    // Conversions de volume
+    else if (['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitInitial) && ['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitFinal)) {
+        const exponent = getExponent(initialValue, finalValue);
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+    }
+    // Autres conversions
+    else {
+        const exponent = getExponent(initialValue, finalValue);
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>Donc : ${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> = ${ex.final} ${ex.unitFinal}</p>`;
+    }
+
+    explanationElement.innerHTML = explanation;
+}
+
 
         createExercises();
     </script>
