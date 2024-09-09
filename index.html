@@ -64,7 +64,7 @@
         .incorrect {
             color: red;
         }
-        .hint, .anation {
+        .hint, .explanation {
             display: none;
             margin-top: 10px;
             padding: 5px;
@@ -117,17 +117,17 @@
         <tr>
             <td>Longueur</td>
             <td>km, m, cm, mm, µm, Mm, ly</td>
-            <td>1 km = 10^3 m, 1 m = 10^2 cm = 10^3 mm = 10^6 µm</td>
+            <td>1 km = 10<sup>3</sup> m, 1 m = 10<sup>2</sup> cm = 10<sup>3</sup> mm = 10<sup>6</sup> µm</td>
         </tr>
         <tr>
             <td>Masse</td>
             <td>ton, kg, g, mg, µg, Mg</td>
-            <td>1 ton = 10^3 kg, 1 kg = 10^3 g, 1 g = 10^3 mg = 10^6 µg</td>
+            <td>1 ton = 10<sup>3</sup> kg, 1 kg = 10<sup>3</sup> g, 1 g = 10<sup>3</sup> mg = 10<sup>6</sup> µg</td>
         </tr>
         <tr>
             <td>Volume</td>
             <td>m³, L, mL, cm³, mm³</td>
-            <td>1 m�� = 10^3 L, 1 L = 10^3 mL = 10^3 cm³, 1 cm³ = 10^3 mm³</td>
+            <td>1 m³ = 10<sup>3</sup> L, 1 L = 10<sup>3</sup> mL = 10<sup>3</sup> cm³, 1 cm³ = 10<sup>3</sup> mm³</td>
         </tr>
         <tr>
             <td>Vitesse</td>
@@ -137,12 +137,12 @@
         <tr>
             <td>Pression</td>
             <td>Pa, bar, kPa, atm</td>
-            <td>1 bar = 10^5 Pa, 1 kPa = 10^3 Pa, 1 atm ≈ 1,013 x 10^5 Pa</td>
+            <td>1 bar = 10<sup>5</sup> Pa, 1 kPa = 10<sup>3</sup> Pa, 1 atm ≈ 1,013 x 10<sup>5</sup> Pa</td>
         </tr>
         <tr>
             <td>Énergie</td>
             <td>J, kJ, cal, kWh</td>
-            <td>1 kJ = 10^3 J, 1 cal ≈ 4,18 J, 1 kWh = 3,6 x 10^6 J</td>
+            <td>1 kJ = 10<sup>3</sup> J, 1 cal ≈ 4,18 J, 1 kWh = 3,6 x 10<sup>6</sup> J</td>
         </tr>
     </table>
 
@@ -159,7 +159,148 @@
     <div id="exercises"></div>
 
     <script>
-        const exercises = [
+        const unitInfo = {
+            length: {
+                units: ['km', 'm', 'cm', 'mm', 'µm'],
+                base: 'm',
+                conversions: {
+                    'km': 3, 'm': 0, 'cm': -2, 'mm': -3, 'µm': -6
+                }
+            },
+            mass: {
+                units: ['ton', 'kg', 'g', 'mg', 'µg'],
+                base: 'kg',
+                conversions: {
+                    'ton': 3, 'kg': 0, 'g': -3, 'mg': -6, 'µg': -9
+                }
+            },
+            volume: {
+                units: ['m³', 'L', 'mL', 'cm³', 'mm³'],
+                base: 'L',
+                conversions: {
+                    'm³': 3, 'L': 0, 'mL': -3, 'cm³': -3, 'mm³': -6
+                }
+            }
+        };
+
+        function getExponent(category, from, to) {
+            return unitInfo[category].conversions[to] - unitInfo[category].conversions[from];
+        }
+
+        function toScientificNotation(number) {
+            const exponent = Math.floor(Math.log10(Math.abs(number)));
+            const mantissa = number / Math.pow(10, exponent);
+            return { mantissa: mantissa.toFixed(1), exponent };
+        }
+
+        function showExplanation(index) {
+            const explanationElement = document.getElementById(`explanation${index}`);
+            explanationElement.style.display = 'block';
+            const ex = exercises[index];
+            
+            let explanation = '<h4>Explication détaillée :</h4>';
+
+            let category;
+            for (const cat in unitInfo) {
+                if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
+                    category = cat;
+                    break;
+                }
+            }
+
+            if (category) {
+                const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
+                const { mantissa, exponent: initialExponent } = toScientificNotation(parseFloat(ex.initial.replace(',', '.')));
+
+                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>= ${mantissa} × 10<sup>${initialExponent}</sup> × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+                explanation += `<p>= ${mantissa} × 10<sup>${initialExponent + exponent}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
+
+                if (Math.abs(exponent) > 3) {
+                    const baseUnit = unitInfo[category].base;
+                    const expToBase = getExponent(category, ex.unitInitial, baseUnit);
+                    const expFromBase = getExponent(category, baseUnit, ex.unitFinal);
+                    explanation = explanation.replace(`<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`,
+                        `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> ${baseUnit}</p>` +
+                        `<p>1 ${baseUnit} = 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal}</p>` +
+                        `<p>Donc : 1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> × 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`
+                    );
+                }
+            } else if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
+                const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
+                explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+            } else {
+                const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
+                explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+            }
+
+            explanationElement.innerHTML = explanation;
+        }
+
+        function showHint(index) {
+            const hintElement = document.getElementById(`hint${index}`);
+            const ex = exercises[index];
+            let hint = '';
+
+            let category;
+            for (const cat in unitInfo) {
+                if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
+                    category = cat;
+                    break;
+                }
+            }
+
+            if (category) {
+                const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
+                hint = `Pensez à la relation : 1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}`;
+            } else {
+                hint = `Pensez à la relation entre ${ex.unitInitial} et ${ex.unitFinal}. Utilisez les puissances de 10.`;
+            }
+
+            hintElement.innerHTML = hint;
+            hintElement.style.display = 'block';
+        }
+
+        function checkAnswer(index) {
+            const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
+            const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
+            const feedbackElement = document.getElementById(`feedback${index}`);
+            const hintButton = document.getElementById(`hintBtn${index}`);
+            
+            if (userAnswer === correctAnswer) {
+                feedbackElement.textContent = "Correct ! Bien joué !";
+                feedbackElement.className = "feedback correct";
+                hintButton.style.display = 'none';
+                showExplanation(index);
+            } else {
+                feedbackElement.textContent = "Incorrect. Essayez encore !";
+                feedbackElement.className = "feedback incorrect";
+                hintButton.style.display = 'inline-block';
+            }
+        }
+
+        function createExercises() {
+            const container = document.getElementById('exercises');
+            exercises.forEach((ex, index) => {
+                const div = document.createElement('div');
+                div.className = 'exercise';
+                div.innerHTML = `
+                    <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
+                    <input type="text" id="answer${index}" placeholder="Votre réponse">
+                    <button onclick="checkAnswer(${index})">Vérifier</button>
+                    <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
+                    <div id="feedback${index}" class="feedback"></div>
+                    <div id="hint${index}" class="hint"></div>
+                    <div id="explanation${index}" class="explanation"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+          const exercises = [
             {initial: "1500", unitInitial: "km", final: "1,5x10^8", unitFinal: "cm", difficulty: 1},
             {initial: "2,5", unitInitial: "mg", final: "2,5x10^-6", unitFinal: "kg", difficulty: 1},
             {initial: "3,7", unitInitial: "L", final: "3,7x10^3", unitFinal: "mL", difficulty: 1},
@@ -233,115 +374,8 @@
 
         exercises.sort((a, b) => a.difficulty - b.difficulty);
 
-        function createExercises() {
-            const container = document.getElementById('exercises');
-            exercises.forEach((ex, index) => {
-                const div = document.createElement('div');
-                div.className = 'exercise';
-                div.innerHTML = `
-                    <p>Convertissez ${ex.initial} ${ex.unitInitial} en ${ex.unitFinal}</p>
-                    <input type="text" id="answer${index}" placeholder="Votre réponse">
-                    <button onclick="checkAnswer(${index})">Vérifier</button>
-                    <button onclick="showHint(${index})" id="hintBtn${index}" style="display:none;">Indice</button>
-                    <div id="feedback${index}" class="feedback"></div>
-                    <div id="hint${index}" class="hint"></div>
-                    <div id="explanation${index}" class="explanation"></div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function checkAnswer(index) {
-            const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
-            const correctAnswer = exercises[index].final.replace(/\s/g, '').toLowerCase();
-            const feedbackElement = document.getElementById(`feedback${index}`);
-            const hintButton = document.getElementById(`hintBtn${index}`);
-            
-            if (userAnswer === correctAnswer) {
-                feedbackElement.textContent = "Correct ! Bien joué !";
-                feedbackElement.className = "feedback correct";
-                hintButton.style.display = 'none';
-                showExplanation(index);
-            } else {
-                feedbackElement.textContent = "Incorrect. Essayez encore !";
-                feedbackElement.className = "feedback incorrect";
-                hintButton.style.display = 'inline-block';
-            }
-        }
-
-        function showHint(index) {
-            const hintElement = document.getElementById(`hint${index}`);
-            hintElement.style.display = 'block';
-            hintElement.textContent = `Indice : Pensez à la relation entre ${exercises[index].unitInitial} et ${exercises[index].unitFinal}. Utilisez les puissances de 10.`;
-        }
-
-        function showExplanation(index) {
-    const explanationElement = document.getElementById(`explanation${index}`);
-    explanationElement.style.display = 'block';
-    const ex = exercises[index];
-    
-    let explanation = '<h4>Explication détaillée :</h4>';
-    const initialValue = parseFloat(ex.initial.replace(',', '.'));
-    const finalValue = parseFloat(ex.final.replace(',', '.'));
-
-    function getExponent(from, to) {
-        return Math.log10(to / from);
-    }
-
-    if (['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitInitial) && ['km', 'm', 'cm', 'mm', 'µm'].includes(ex.unitFinal)) {
-        const units = ['km', 'm', 'cm', 'mm', 'µm'];
-        const startIndex = units.indexOf(ex.unitInitial);
-        const endIndex = units.indexOf(ex.unitFinal);
-        const exponent = (endIndex - startIndex) * 3;
-        
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>1 ${ex.unitInitial} = 1000 ${units[startIndex + 1]} = 10<sup>3</sup> ${units[startIndex + 1]}</p>`;
-        if (Math.abs(exponent) > 3) {
-            explanation += `<p>1 ${units[startIndex + 1]} = ${Math.pow(10, Math.abs(exponent) - 3)} ${ex.unitFinal} = 10<sup>${Math.abs(exponent) - 3}</sup> ${ex.unitFinal}</p>`;
-        }
-        explanation += `<p>Donc : 1 ${ex.unitInitial} = 10<sup>3</sup> × 10<sup>${Math.abs(exponent) - 3}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${parseFloat(ex.initial).toExponential(1)} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
-    } 
-    else if (['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitInitial) && ['ton', 'kg', 'g', 'mg', 'µg'].includes(ex.unitFinal)) {
-        const units = ['ton', 'kg', 'g', 'mg', 'µg'];
-        const startIndex = units.indexOf(ex.unitInitial);
-        const endIndex = units.indexOf(ex.unitFinal);
-        const exponent = (endIndex - startIndex) * 3;
-        
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>1 ${ex.unitInitial} = 1000 ${units[startIndex + 1]} = 10<sup>3</sup> ${units[startIndex + 1]}</p>`;
-        if (Math.abs(exponent) > 3) {
-            explanation += `<p>1 ${units[startIndex + 1]} = ${Math.pow(10, Math.abs(exponent) - 3)} ${ex.unitFinal} = 10<sup>${Math.abs(exponent) - 3}</sup> ${ex.unitFinal}</p>`;
-        }
-        explanation += `<p>Donc : 1 ${ex.unitInitial} = 10<sup>3</sup> × 10<sup>${Math.abs(exponent) - 3}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${parseFloat(ex.initial).toExponential(1)} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
-    } 
-    else if (['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitInitial) && ['m³', 'L', 'mL', 'cm³', 'mm³'].includes(ex.unitFinal)) {
-        const exponent = getExponent(initialValue, finalValue);
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${parseFloat(ex.initial).toExponential(1)} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
-    } 
-    else if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
-        const factor = (finalValue / initialValue).toFixed(4);
-        explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${ex.final} ${ex.unitFinal}</p>`;
-    } 
-    else {
-        const exponent = getExponent(initialValue, finalValue);
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${parseFloat(ex.initial).toExponential(1)} × 10<sup>${exponent}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
-    }
-
-    explanationElement.innerHTML = explanation;
-}
-
-
         createExercises();
     </script>
 </body>
 </html>
+
