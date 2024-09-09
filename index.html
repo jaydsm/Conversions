@@ -193,52 +193,52 @@
             return { mantissa: mantissa.toFixed(1), exponent };
         }
 
-        function showExplanation(index) {
-            const explanationElement = document.getElementById(`explanation${index}`);
-            explanationElement.style.display = 'block';
-            const ex = exercises[index];
-            
-            let explanation = '<h4>Explication détaillée :</h4>';
+       function showExplanation(index) {
+    const explanationElement = document.getElementById(`explanation${index}`);
+    explanationElement.style.display = 'block';
+    const ex = exercises[index];
+    
+    let explanation = '<h4>Explication détaillée :</h4>';
 
-            let category;
-            for (const cat in unitInfo) {
-                if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
-                    category = cat;
-                    break;
-                }
-            }
-
-            if (category) {
-                const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
-                const { mantissa, exponent: initialExponent } = toScientificNotation(parseFloat(ex.initial.replace(',', '.')));
-
-                explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-                explanation += `<p>= ${mantissa} × 10<sup>${initialExponent}</sup> × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
-                explanation += `<p>= ${mantissa} × 10<sup>${initialExponent + exponent}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
-
-                if (Math.abs(exponent) > 3) {
-                    const baseUnit = unitInfo[category].base;
-                    const expToBase = getExponent(category, ex.unitInitial, baseUnit);
-                    const expFromBase = getExponent(category, baseUnit, ex.unitFinal);
-                    explanation = explanation.replace(`<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`,
-                        `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> ${baseUnit}</p>` +
-                        `<p>1 ${baseUnit} = 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal}</p>` +
-                        `<p>Donc : 1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> × 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`
-                    );
-                }
-            } else if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
-                const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
-                explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
-                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
-            } else {
-                const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
-                explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
-                explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
-            }
-
-            explanationElement.innerHTML = explanation;
+    let category;
+    for (const cat in unitInfo) {
+        if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
+            category = cat;
+            break;
         }
+    }
+
+    if (category) {
+        const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
+        const initialValue = parseFloat(ex.initial.replace(',', '.'));
+        const { mantissa, exponent: initialExponent } = toScientificNotation(initialValue);
+
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+        
+        if (Math.abs(exponent) > 3) {
+            const baseUnit = unitInfo[category].base;
+            const expToBase = getExponent(category, ex.unitInitial, baseUnit);
+            const expFromBase = getExponent(category, baseUnit, ex.unitFinal);
+            explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> ${baseUnit}</p>`;
+            explanation += `<p>1 ${baseUnit} = 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal}</p>`;
+            explanation += `<p>Donc : 1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> × 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+        }
+
+        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent}</sup> × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent + Math.abs(exponent)}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
+    } else if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
+        const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
+        explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+    } else {
+        const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
+        explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
+        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × ${factor} = ${ex.final} ${ex.unitFinal}</p>`;
+    }
+
+    explanationElement.innerHTML = explanation;
+}
 
         function showHint(index) {
             const hintElement = document.getElementById(`hint${index}`);
