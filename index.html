@@ -64,7 +64,7 @@
         .incorrect {
             color: red;
         }
-        .hint, .explanation {
+        ., .explanation {
             display: none;
             margin-top: 10px;
             padding: 5px;
@@ -213,20 +213,20 @@
         const initialValue = parseFloat(ex.initial.replace(',', '.'));
         const { mantissa, exponent: initialExponent } = toScientificNotation(initialValue);
 
-        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
         
         if (Math.abs(exponent) > 3) {
             const baseUnit = unitInfo[category].base;
             const expToBase = getExponent(category, ex.unitInitial, baseUnit);
             const expFromBase = getExponent(category, baseUnit, ex.unitFinal);
-            explanation += `<p>1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> ${baseUnit}</p>`;
-            explanation += `<p>1 ${baseUnit} = 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal}</p>`;
-            explanation += `<p>Donc : 1 ${ex.unitInitial} = 10<sup>${Math.abs(expToBase)}</sup> × 10<sup>${Math.abs(expFromBase)}</sup> ${ex.unitFinal} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
+            explanation += `<p>1 ${ex.unitInitial} = 10<sup>${expToBase}</sup> ${baseUnit}</p>`;
+            explanation += `<p>1 ${baseUnit} = 10<sup>${expFromBase}</sup> ${ex.unitFinal}</p>`;
+            explanation += `<p>Donc : 1 ${ex.unitInitial} = 10<sup>${expToBase}</sup> × 10<sup>${expFromBase}</sup> ${ex.unitFinal} = 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
         }
 
-        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent}</sup> × 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}</p>`;
-        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent + Math.abs(exponent)}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
+        explanation += `<p>${ex.initial} ${ex.unitInitial} = ${ex.initial} × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent}</sup> × 10<sup>${exponent}</sup> ${ex.unitFinal}</p>`;
+        explanation += `<p>= ${mantissa} × 10<sup>${initialExponent + exponent}</sup> ${ex.unitFinal} = ${ex.final} ${ex.unitFinal}</p>`;
     } else if (ex.unitInitial.includes('/') || ex.unitFinal.includes('/')) {
         const factor = (parseFloat(ex.final.replace(',', '.')) / parseFloat(ex.initial.replace(',', '.'))).toFixed(4);
         explanation += `<p>1 ${ex.unitInitial} = ${factor} ${ex.unitFinal}</p>`;
@@ -240,29 +240,31 @@
     explanationElement.innerHTML = explanation;
 }
 
+
         function showHint(index) {
-            const hintElement = document.getElementById(`hint${index}`);
-            const ex = exercises[index];
-            let hint = '';
+    const hintElement = document.getElementById(`hint${index}`);
+    const ex = exercises[index];
+    let hint = '';
 
-            let category;
-            for (const cat in unitInfo) {
-                if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
-                    category = cat;
-                    break;
-                }
-            }
-
-            if (category) {
-                const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
-                hint = `Pensez à la relation : 1 ${ex.unitInitial} = 10<sup>${Math.abs(exponent)}</sup> ${ex.unitFinal}`;
-            } else {
-                hint = `Pensez à la relation entre ${ex.unitInitial} et ${ex.unitFinal}. Utilisez les puissances de 10.`;
-            }
-
-            hintElement.innerHTML = hint;
-            hintElement.style.display = 'block';
+    let category;
+    for (const cat in unitInfo) {
+        if (unitInfo[cat].units.includes(ex.unitInitial) && unitInfo[cat].units.includes(ex.unitFinal)) {
+            category = cat;
+            break;
         }
+    }
+
+    if (category) {
+        const exponent = getExponent(category, ex.unitInitial, ex.unitFinal);
+        hint = `Pensez à la relation : 1 ${ex.unitInitial} = 10<sup>${exponent}</sup> ${ex.unitFinal}`;
+    } else {
+        hint = `Pensez à la relation entre ${ex.unitInitial} et ${ex.unitFinal}. Utilisez les puissances de 10.`;
+    }
+
+    hintElement.innerHTML = hint;
+    hintElement.style.display = 'block';
+}
+
 
         function checkAnswer(index) {
             const userAnswer = document.getElementById(`answer${index}`).value.replace(/\s/g, '').toLowerCase();
